@@ -5,11 +5,17 @@ const aiFeatures = [
   { path: '/fish-stocks', icon: '🐟', label: 'Fish Stock Modeling' },
   { path: '/feed-records', icon: '🌾', label: 'Feed Optimization' },
   { path: '/water-quality', icon: '💧', label: 'Water Quality' },
+  { path: '/sensors', icon: '📡', label: 'IoT Sensor Ingest' },
   { path: '/harvest-plans', icon: '📅', label: 'Harvest Timing' },
   { path: '/regulatory', icon: '📋', label: 'Regulatory Compliance' },
   { path: '/diseases', icon: '🦠', label: 'Disease Detection' },
+  { path: '/vision-disease', icon: '🔬', label: 'Vision Diagnosis' },
   { path: '/growth-records', icon: '📊', label: 'Growth Analysis' },
   { path: '/weather', icon: '☁️', label: 'Weather Analysis' },
+  { path: '/sustainability', icon: '🌱', label: 'Sustainability Score' },
+  { path: '/mortality-predict', icon: '📉', label: 'Mortality Predictor' },
+  { path: '/sensor-monitor', icon: '📊', label: 'Sensor Monitor' },
+  { path: '/ai-results', icon: '🤖', label: 'AI Run History' },
 ];
 
 const mgmtFeatures = [

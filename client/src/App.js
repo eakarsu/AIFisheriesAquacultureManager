@@ -4,8 +4,17 @@ import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import FeaturePage from './components/FeaturePage';
 import WeatherAnalysis from './pages/WeatherAnalysis';
+import VisionDisease from './pages/VisionDisease';
+import SensorIngest from './pages/SensorIngest';
+import AiResults from './pages/AiResults';
+import Sustainability from './pages/Sustainability';
+import MortalityPredict from './pages/MortalityPredict';
+import SensorMonitor from './pages/SensorMonitor';
+import AgenticFarm from './pages/AgenticFarm';
 import Layout from './components/Layout';
 import './App.css';
+
+import Batch03Features from './pages/Batch03Features';
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -366,6 +375,7 @@ function App() {
   return (
     <Router>
       <Routes>
+          <Route path="/batch03" element={<Batch03Features />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<PrivateRoute><Layout><Dashboard configs={featureConfigs} /></Layout></PrivateRoute>} />
         {Object.entries(featureConfigs).map(([key, config]) => (
@@ -382,6 +392,13 @@ function App() {
           />
         ))}
         <Route path="/weather" element={<PrivateRoute><Layout><WeatherAnalysis /></Layout></PrivateRoute>} />
+        <Route path="/vision-disease" element={<PrivateRoute><Layout><VisionDisease /></Layout></PrivateRoute>} />
+        <Route path="/sensors" element={<PrivateRoute><Layout><SensorIngest /></Layout></PrivateRoute>} />
+        <Route path="/ai-results" element={<PrivateRoute><Layout><AiResults /></Layout></PrivateRoute>} />
+        <Route path="/sustainability" element={<PrivateRoute><Layout><Sustainability /></Layout></PrivateRoute>} />
+        <Route path="/mortality-predict" element={<PrivateRoute><Layout><MortalityPredict /></Layout></PrivateRoute>} />
+        <Route path="/sensor-monitor" element={<PrivateRoute><Layout><SensorMonitor /></Layout></PrivateRoute>} />
+        <Route path="/agentic-farm" element={<PrivateRoute><Layout><AgenticFarm /></Layout></PrivateRoute>} />
       </Routes>
     </Router>
   );

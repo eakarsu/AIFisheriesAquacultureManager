@@ -172,6 +172,8 @@ const DiseaseRecord = sequelize.define('DiseaseRecord', {
   diagnosis_date: { type: DataTypes.DATE },
   status: { type: DataTypes.STRING },
   notes: { type: DataTypes.TEXT },
+  image_url: { type: DataTypes.STRING }, // for vision-based diagnosis (audit gap closure)
+  user_id: { type: DataTypes.INTEGER }, // row-level scoping
 });
 
 // ---- GrowthRecord ----
@@ -216,6 +218,64 @@ const Supplier = sequelize.define('Supplier', {
   notes: { type: DataTypes.TEXT },
 });
 
+// ---- AiResult ----
+// Replaces the audit-flagged "AI outputs in notes field" pattern with a
+// proper persistent table that stores model attribution and structured outputs.
+const AiResult = sequelize.define('AiResult', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  feature: { type: DataTypes.STRING, allowNull: false },
+  user_id: { type: DataTypes.INTEGER },
+  entity_type: { type: DataTypes.STRING },
+  entity_id: { type: DataTypes.INTEGER },
+  input: { type: DataTypes.JSONB },
+  output: { type: DataTypes.JSONB },
+  raw: { type: DataTypes.TEXT },
+  model: { type: DataTypes.STRING },
+  tokens_in: { type: DataTypes.INTEGER },
+  tokens_out: { type: DataTypes.INTEGER },
+  duration_ms: { type: DataTypes.INTEGER },
+  status: { type: DataTypes.STRING, defaultValue: 'completed' },
+  error: { type: DataTypes.TEXT },
+}, { indexes: [{ fields: ['feature'] }, { fields: ['entity_type', 'entity_id'] }] });
+
+// ---- WaterQualityAlert ----
+const WaterQualityAlert = sequelize.define('WaterQualityAlert', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  pond_id: { type: DataTypes.INTEGER },
+  metric: { type: DataTypes.STRING },
+  observed_value: { type: DataTypes.FLOAT },
+  expected_min: { type: DataTypes.FLOAT },
+  expected_max: { type: DataTypes.FLOAT },
+  severity: { type: DataTypes.STRING },
+  message: { type: DataTypes.TEXT },
+  acknowledged: { type: DataTypes.BOOLEAN, defaultValue: false },
+});
+
+// ---- Associations (closes audit gap: no FKs/cascades previously) ----
+Pond.hasMany(FishStock, { foreignKey: 'pond_id', onDelete: 'CASCADE' });
+FishStock.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(FeedRecord, { foreignKey: 'pond_id', onDelete: 'SET NULL' });
+FeedRecord.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(WaterQuality, { foreignKey: 'pond_id', onDelete: 'CASCADE' });
+WaterQuality.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(HarvestPlan, { foreignKey: 'pond_id', onDelete: 'SET NULL' });
+HarvestPlan.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(DiseaseRecord, { foreignKey: 'pond_id', onDelete: 'CASCADE' });
+DiseaseRecord.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(GrowthRecord, { foreignKey: 'pond_id', onDelete: 'CASCADE' });
+GrowthRecord.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+Pond.hasMany(WaterQualityAlert, { foreignKey: 'pond_id', onDelete: 'CASCADE' });
+WaterQualityAlert.belongsTo(Pond, { foreignKey: 'pond_id' });
+
+User.hasMany(DiseaseRecord, { foreignKey: 'user_id' });
+DiseaseRecord.belongsTo(User, { foreignKey: 'user_id' });
+
 const db = {
   sequelize,
   Sequelize,
@@ -234,6 +294,8 @@ const db = {
   GrowthRecord,
   FinancialRecord,
   Supplier,
+  AiResult,
+  WaterQualityAlert,
 };
 
 module.exports = db;

@@ -96,6 +96,10 @@ Please provide:
 6. Recommended testing frequency`;
 
     const analysis = await queryAI(prompt, systemPrompt);
+
+    // Persist AI result back to the record
+    await record.update({ status: record.status, notes: `${record.notes ? record.notes + '\n\n' : ''}[AI Analysis ${new Date().toISOString()}]\n${analysis}` });
+
     res.json({ analysis, record });
   } catch (err) {
     console.error('Error analyzing water quality:', err);
