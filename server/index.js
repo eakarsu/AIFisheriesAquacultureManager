@@ -90,6 +90,7 @@ app.use('/api/traceability-chain', require('./routes/traceabilityChain'));
 app.use('/api/equipment-maintenance', require('./routes/equipmentMaintenance'));
 app.use('/api/sustainability-cert', require('./routes/sustainabilityCertification'));
 app.use('/api/market-price-forecast', require('./routes/marketPriceForecast'));
+app.use('/api/stocking-permit-planner', require('./routes/stockingPermitPlanner'));
 
 // Health check
 app.get('/api/health', (req, res) => {

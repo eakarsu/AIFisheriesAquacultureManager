@@ -16,6 +16,12 @@ import './App.css';
 
 import Batch03Features from './pages/Batch03Features';
 
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
+import TimelineView from './pages/TimelineView';
+import StockingPermitPlanner from './pages/StockingPermitPlanner';
+
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/login" />;
@@ -375,6 +381,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/insights/timeline" element={<TimelineView />} />
+        <Route path="/codex/custom-viz" element={<CodexCustomVizFeature />} />
+        <Route path="/codex/operations" element={<CodexOperationsFeature />} />
+
           <Route path="/batch03" element={<Batch03Features />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<PrivateRoute><Layout><Dashboard configs={featureConfigs} /></Layout></PrivateRoute>} />
@@ -395,6 +405,7 @@ function App() {
         <Route path="/vision-disease" element={<PrivateRoute><Layout><VisionDisease /></Layout></PrivateRoute>} />
         <Route path="/sensors" element={<PrivateRoute><Layout><SensorIngest /></Layout></PrivateRoute>} />
         <Route path="/ai-results" element={<PrivateRoute><Layout><AiResults /></Layout></PrivateRoute>} />
+        <Route path="/stocking-permit-planner" element={<PrivateRoute><Layout><StockingPermitPlanner /></Layout></PrivateRoute>} />
         <Route path="/sustainability" element={<PrivateRoute><Layout><Sustainability /></Layout></PrivateRoute>} />
         <Route path="/mortality-predict" element={<PrivateRoute><Layout><MortalityPredict /></Layout></PrivateRoute>} />
         <Route path="/sensor-monitor" element={<PrivateRoute><Layout><SensorMonitor /></Layout></PrivateRoute>} />
