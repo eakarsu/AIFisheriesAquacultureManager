@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, name, role } = req.body;
+    const { email, password, name } = req.body;
 
     const existing = await User.findOne({ where: { email } });
     if (existing) {
@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ email, password: hashedPassword, name, role });
+    const user = await User.create({ email, password: hashedPassword, name, role: 'operator' });
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
