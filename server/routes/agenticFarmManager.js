@@ -8,7 +8,8 @@ async function callLLM(prompt, system) {
   // TODO: configure credentials — OPENROUTER_API_KEY
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
-  const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const baseUrl = (process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
+  const r = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ model: process.env.OPENROUTER_MODEL || 'anthropic/claude-3-5-sonnet-20241022', messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }], max_tokens: 1200 }),
