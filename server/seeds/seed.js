@@ -21,15 +21,21 @@ const {
   Supplier,
 } = require('../models');
 
+function requireDemoPassword() {
+  const password = process.env.DEMO_PASSWORD || process.env.SEED_DEMO_PASSWORD || process.env.DEMO_SEED_PASSWORD || '';
+  if (password.length < 12 || password.length > 1024) throw new Error('DEMO_PASSWORD must contain 12-1024 characters');
+  return password;
+}
+
 async function seed() {
   try {
     await sequelize.sync({ force: true });
     console.log('Database tables recreated.');
 
     // ── Users (3) ──────────────────────────────────────────────────────
-    const hashedAdmin = await bcrypt.hash('admin123', 10);
-    const hashedManager = await bcrypt.hash('manager123', 10);
-    const hashedOperator = await bcrypt.hash('operator123', 10);
+    const hashedAdmin = await bcrypt.hash(requireDemoPassword(), 10);
+    const hashedManager = await bcrypt.hash(requireDemoPassword(), 10);
+    const hashedOperator = await bcrypt.hash(requireDemoPassword(), 10);
 
     await User.bulkCreate([
       { email: 'admin@fisheries.com', password: hashedAdmin, name: 'Admin User', role: 'admin' },
