@@ -69,8 +69,8 @@ function LoginPage() {
           </button>
         </form>
 
-        <button className="quick-login" onClick={handleQuickLogin}>
-          ⚡ Quick Login (Demo Account)
+        <button className="quick-login" onClick={handleQuickLogin} aria-label="Auto Fill Demo Credentials">
+          ⚡ Auto Fill Demo Credentials
         </button>
       </div>
     </div>
